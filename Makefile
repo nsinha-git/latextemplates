@@ -9,17 +9,28 @@ all: create
 clean:rm
 
 create:killopenpdf
-	-@latex *.tex
+	-@latex reqs.tex
 	@$(PDF) *.dvi
 	@open *.pdf
 	@$(RML)
 
 onlycreate:
-	-@latex *.tex
+	-@latex reqs.tex
 	@$(PDF) *.dvi
 	@open *.pdf
 	$(RML)
 
+createtest:killopenpdf
+	-@latex test.tex
+	@$(PDF) *.dvi
+	@open *.pdf
+	@$(RML)
+
+onlycreatetest:
+	-@latex test.tex
+	@$(PDF) *.dvi
+	@open *.pdf
+	@$(RML)
 
 rm:killopenpdf
 	@$(RM)   
