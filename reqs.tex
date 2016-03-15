@@ -40,6 +40,7 @@
 \usepackage{tikz}
 \usetikzlibrary{arrows}
 \usetikzlibrary{calc}
+\usepackage{pgfmath}
 \tikzstyle{block}=[draw opacity=0.7,line width=1.4cm]
 
 
@@ -71,10 +72,16 @@ Monitor Platform Architecture Spec %
 % The main document
 
 \newcommand{\drawLinkArrow}[4]{
+		\pgfmathparse{2pt+3.5pt}
+	%\draw[->] let
+		%\p1 = ($(#1)), \p2 = ($(#2)),
+		%\p3 = ($(#3)), \p4 = ($(#4)) 
+		%in ($ (\x1 + \x2)*1/2$ ,\y1) -| ($ (\x3 + \x4)*1/2$ ,\y4);
 	\draw[->] let
-		\p1 = ($(#1)), \p2 = ($(#2)),
-		\p3 = ($(#3)), \p4 = ($(#4)) 
-		in ($ (\x1 + \x2)*1/2$ ,\y1) -| ($ (\x3 + \x4)*1/2$ ,\y4);
+		\p1 = (#1), \p2 = (#2),
+		\p3 = (#3), \p4 = (#4)
+		in
+		({(\x1 + \x2)*1/2} ,\y1) -- ({(\x3 + \x4)*1/2} ,\y4);
 }
 
 %\draw (A) let
@@ -110,6 +117,7 @@ Monitor Platform Architecture Spec %
    	\shade[top color=yellow,bottom color=black] (B1_L) rectangle (B1_R) node[midway,below] {Zookeeper};
    	\shade[top color=yellow,bottom color=black] (B2_L) rectangle (B2_R) node[midway,below] {Backend};
    	\shade[top color=yellow,bottom color=black] (B3_L) rectangle (B3_R) node[midway,below] {Platform};
+	\drawLinkArrow{B1_L}{B1_R}{B2_L}{B2_R}
 
 
   \end{tikzpicture}
