@@ -1,1 +1,10 @@
-*.pdf *.dvi *.out *.log *.aux *.bcf *.xml *.snm *.toc *.nav
+*.pdf 
+*.dvi 
+*.out 
+*.log 
+*.aux 
+*.bcf 
+*.xml 
+*.snm 
+*.toc 
+*.nav
