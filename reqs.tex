@@ -1,22 +1,6 @@
-%copyright 2007 by Till Tantau
-%
-% This file may be distributed and/or modified
-%
-% 1. under the LaTeX Project Public License and/or
-% 2. under the GNU Public License.
-%
-% See the file doc/licenses/LICENSE for more details.
-
 
 
 \documentclass{beamer}
-
-%
-% DO NOT USE THIS FILE AS A TEMPLATE FOR YOUR OWN TALKS¡!!
-%
-% Use a file in the directory solutions instead.
-% They are much better suited.
-%
 
 
 % Setup appearance:
@@ -41,6 +25,7 @@
 \usetikzlibrary{arrows}
 \usetikzlibrary{calc}
 \usepackage{pgfmath}
+\usepackage{verbatim}
 \tikzstyle{block}=[draw opacity=0.7,line width=1.4cm]
 
 
@@ -84,12 +69,6 @@ Monitor Platform Architecture Spec %
 		({(\x1 + \x2)*1/2} ,\y1) -- ({(\x3 + \x4)*1/2} ,\y4);
 }
 
-%\draw (A) let
-%\p1 = ($ (B) - (A) $)
-%\n1 = ($ 1 $)
-%in
-%circle ({veclen(\x1,\y1)});
-
 \begin{document}
 
 \begin{frame}
@@ -105,175 +84,137 @@ Monitor Platform Architecture Spec %
 
 \subsection{The Architecture}
 
-\begin{frame}{Diagram}
-   \begin{tikzpicture}
+\begin{frame}{Schema}
+   \begin{tikzpicture}[scale=0.71]
      
 	\coordinate (B1_L) at (0,0);
-	\coordinate (B1_R) at (5,1);
+	\coordinate (B1_R) at (5,2);
 	\coordinate (B2_L) at (0,-3);
 	\coordinate (B2_R) at (10,-1);
 	\coordinate (B3_L) at (0,-6);
 	\coordinate (B3_R) at (10,-4);
+	\coordinate (B4_L) at (0,-9);
+	\coordinate (B4_R) at (4,-7);
+	\coordinate (B5_L) at (7,-9);
+	\coordinate (B5_R) at (11,-7);
    	\shade[top color=yellow,bottom color=black] (B1_L) rectangle (B1_R) node[midway,below] {Zookeeper};
-   	\shade[top color=yellow,bottom color=black] (B2_L) rectangle (B2_R) node[midway,below] {Backend};
-   	\shade[top color=yellow,bottom color=black] (B3_L) rectangle (B3_R) node[midway,below] {Platform};
+   	\shade[top color=orange,bottom color=black] (B2_L) rectangle (B2_R) node[midway,below] {Backend of Platform};
+   	\shade[top color=brown,bottom color=black] (B3_L) rectangle (B3_R) node[midway,below] {Platform};
+   	\shade[top color=red,bottom color=black] (B4_L) rectangle (B4_R) node[midway,below] {RegisterTaskInterface};
+   	\shade[top color=green,bottom color=black] (B5_L) rectangle (B5_R) node[midway,below] {CRUD on Data Interface};
 	\drawLinkArrow{B1_L}{B1_R}{B2_L}{B2_R}
+	\drawLinkArrow{B2_L}{B2_R}{B3_L}{B3_R}
+	\drawLinkArrow{B3_L}{B3_R}{B4_L}{B4_R}
+	\drawLinkArrow{B3_L}{B3_R}{B5_L}{B5_R}
 
 
   \end{tikzpicture}
 
 \end{frame}
 
+\section{Interfaces of Platform}
+\subsection {RegisterTaskInterface}
+\begin{frame}
+	\begin{block}{RegisterTaskInterface}
+		\begin{itemize}
+			\item bool \alert{RegisterTask}(Namespace, PlatformTask(initFn,quitFn,runnableMainTask,CallFrequencyConfig)).
+			\begin{itemize}
+				\item Namespace(name: String, access:Enum\{exclusive, inclusive\}).
+				\item CallFrequnecyConfig(Type: Enum\{periodic,watchOnEvent\}), period: milliseconds).
+			\end{itemize}
+		\end{itemize}
+	\end{block}
+\end{frame}
 
 
+\subsection {DataInterface}
+\begin{frame}
+\begin{block}{DataInterface}
+		\begin{itemize}
+			\item bool \alert{createData}(key:String,value:String)
+			\item bool \alert{updateData}(key:String,value:String)
+			\item bool \alert{deleteData}(key:String)
+			\item bool \alert{existsData}(key:String)
+			\item String \alert{readData}(key:String)
+			\item bool \alert{watchData}(key:Stringi, fn: Function)
+		\end{itemize}
+	\end{block}
 
-%\begin{frame}[t]{General formalization of haplotyping.}
-%  \begin{block}{Inputs}
-%    \begin{itemize}
-%    \item A \alert{genotype matrix} $G$.
-%    \item The \alert{rows} of the matrix are \alert{taxa / individuals}.
-%   \item The \alert{columns} of the matrix are \alert{SNP sites /
-%       characters}. 
-%  \end{itemize}
-% \end{block}
- %  \begin{block}{Outputs}
- %    \begin{itemize}
- %    \item A \alert{haplotype matrix} $H$.
- %    \item Pairs of rows in $H$ \alert{explain} the rows of $G$.
- %    \item The haplotypes in $H$ are \alert{biologically plausible}. 
-%    \item<alert{Data missing}->
-      The problem is directed: one haplotype is known.
- %    \end{itemize}
- %  \end{block}
-%  \begin{enumerate}
-%  \end{enumerate}
-% \end{frame}
+\end{frame}
 
 
+\subsection {Backend Interface of Platform}
+\begin{frame}
+   \begin{tikzpicture}[scale=0.71]
+     
+	\coordinate (B1_L) at (0,0);
+	\coordinate (B1_R) at (10,2);
+	\coordinate (B2_L) at (0,-3);
+	\coordinate (B2_R) at (7,-1);
+	\coordinate (B3_L) at (0,-6);
+	\coordinate (B3_R) at (10,-4);
 
-\subsection{The Integrated Approach}
+	\shade[top color=yellow,bottom color=black] (B1_L) rectangle (B1_R) node[midway,below] {ZookeeperBP implemenets Backend(BP)};
+   	\shade[top color=orange,bottom color=black] (B2_L) rectangle (B2_R) node[midway,below] {NameSpaceInterface};
+   	\shade[top color=orange,bottom color=black] (B3_L) rectangle (B3_R) node[midway,below] {Platform};
+	\drawLinkArrow{B1_L}{B1_R}{B2_L}{B2_R}
+	\drawLinkArrow{B2_L}{B2_R}{B3_L}{B3_R}
 
-\begin{frame}{How blocks help in perfect phylogeny haplotyping.}
-  \begin{enumerate}
-  \item Partition the site set into overlapping contiguous blocks.
-  \item Compute a perfect phylogeny for each block and combine them.
-  \item Use dynamic programming for finding the partition.
-  \end{enumerate}
-
-  \begin{tikzpicture}
-    \useasboundingbox (0,-1) rectangle (10,2);
-    
-    \draw[line width=4mm,dash pattern=on 3mm off 1mm]
-      (0,1) -- (9.99,1) node[midway,above] {Genotype matrix}
-      (0,0) -- (9.99,0) node[midway,below] {\only<1>{no perfect phylogeny}};
-
-    \begin{scope}[xshift=-.5mm]
-      \only<2->
-      {
-        \draw[red,block]            (0,.5)   -- (3,.5)
-          node[midway,below] {perfect phylogeny};
-      }
-    \end{scope}
   \end{tikzpicture}
 \end{frame}
 
 
+\subsection {BackendInterface}
+\begin{frame}
+\begin{block}{BackendInterface}
+		\begin{itemize}
+			\item bool \alert{createNamespace}(name:String)
+			\item bool \alert{deleteNamespace}(name:String)
+			\item bool \alert{setNamespace}(name:String)
+			\item bool \alert{exclusiveAccessNamespace}(fn:callbackFn)
+			\item bool \alert{inclusiveAccessNamespace}(fn:callbackFn)
+			\item bool \alert{createDataNamespace}(key:String)
+			\item bool \alert{deleteDataNamespace}(key:String)
+			\item bool \alert{watchDataNamespace}(key:String)
+			\item String \alert{readDataNamespace}(key:String)
+			\item bool \alert{checkDataNamespace}(key:String)
+			\item bool \alert{updateDataNamespace}(key:String)
+		\end{itemize}
+	\end{block}
 
-\section{Bad News: Hardness Results}
-
-\subsection{Hardness of PP-Partitioning of Haplotype Matrices}
-
-\begin{frame}{Finding pp-partitions of haplotype matrices.}
-  \begin{example}
-    \begin{columns}
-      \column{.3\textwidth}
-      $M\colon$
-      \footnotesize
-      \begin{tabular}{cccc}
-        0 & 0 & 0 & 1 \\
-        0 & 1 & 0 & 0 \\
-        1 & 0 & 0 & 0 \\
-        0 & 1 & 0 & 0 \\
-        1 & 0 & 0 & 0 \\
-        0 & 1 & 0 & 1 \\
-        1 & 1 & 0 & 0 \\
-        0 & 0 & 1 & 0 \\
-        1 & 0 & 1 & 0
-      \end{tabular}%
-      \only<2>
-      {%
-        \begin{tikzpicture}
-          \useasboundingbox (2.9,0);
-
-          \draw [red, opacity=0.7,line width=1cm] (1.7 ,1.9) -- (1.7 ,-1.7);
-          \draw [blue,opacity=0.7,line width=5mm] (0.85,1.9) -- (0.85,-1.7)
-                                                  (2.55,1.9) -- (2.55,-1.7);
-        \end{tikzpicture}
-      }
-      \column{.6\textwidth}
-      \begin{overprint}
-        \onslide<1>
-        No perfect phylogeny is possible.
-        
-        \onslide<2>
-        \textcolor{blue!70!bg}{Perfect phylogeny}
-        
-        \textcolor{red!70!bg}{Perfect phylogeny}
-        
-        $\chi_{\operatorname{PP}}(M) = 2$.
-        
-      \end{overprint}
-    \end{columns}
-  \end{example}
 \end{frame}
 
-\subsection{Hardness of PP-Partitioning of Genotype Matrices}
 
 
-\begin{frame}{Finding pp-partitions of genotype matrices.}
-  Now comes the general case:
-  \begin{itemize}
-  \item The inputs $M$ are \alert{genotype matrices}.
-  \item The inputs $M$ \alert{do not allow a perfect phylogeny}.
-  \item What is $\chi_{\operatorname{PP}}(M)$?
-  \end{itemize}
+
+
+
+\begin{frame}{AWS capacity application}
   \begin{example}
-    \begin{columns}
-      \column{.3\textwidth}
-      $M\colon$
-      \footnotesize
-      \begin{tabular}{cccc}
-        2 & 2 & 2 & 2 \\
-        1 & 0 & 0 & 0 \\
-        0 & 0 & 0 & 1 \\
-        0 & 0 & 1 & 0 \\
-        0 & 2 & 2 & 0 \\
-        1 & 1 & 0 & 0 
-      \end{tabular}%
-      \only<2>
-      {%
-        \begin{tikzpicture}
-          \useasboundingbox (2.9,0);
-          
-          \draw [red, opacity=0.7,line width=1cm] (1.7 ,1.3) -- (1.7 ,-1.1);
-          \draw [blue,opacity=0.7,line width=5mm] (0.85,1.3) -- (0.85,-1.1)
-                                                  (2.55,1.3) -- (2.55,-1.1);
-        \end{tikzpicture}
-      }
-      \column{.6\textwidth}
-      \begin{overprint}
-        \onslide<1>
-        No perfect phylogeny is possible.
-        
-        \onslide<2>
-        \textcolor{blue!70!bg}{Perfect phylogeny}
-        
-        \textcolor{red!70!bg}{Perfect phylogeny}
-        
-        $\chi_{\operatorname{PP}}(M) = 2$.
-        
-      \end{overprint}
-    \end{columns}
+	\begin{itemize}
+		\item Consists of two tasks: A leader task and a follower task.
+			\begin{itemize}
+				\item LeadTask is exclusive on the namespace, and node running it is responsible for quering ELB and populating the namespace with relevant data.
+				\item FollowTask is inclusive on the namespace, and every node running it is responsible for quering namespace and for maintaining the local cache in coherence. 
+				\item \alert{There is no application level coupling between these two tasks. We will see in a later example why that might be important.}.
+			\end{itemize}
+	\end{itemize}
+	\begin{tikzpicture}[scale=0.51]
+		\coordinate (B1_L) at (0,0);
+		\coordinate (B1_R) at (10,2);
+		\coordinate (B2_L) at (0,-2.5);
+		\coordinate (B2_R) at (6,-0.5);
+		\coordinate (B3_L) at (7,-2.5);
+		\coordinate (B3_R) at (13,-0.5);
+
+		\shade[top color=yellow,bottom color=black] (B1_L) rectangle (B1_R) node[midway,below] {Aws Capacity Application};
+		\shade[top color=orange,bottom color=black] (B2_L) rectangle (B2_R) node[midway,below] {Aws LeaderTask};
+		\shade[top color=orange,bottom color=black] (B3_L) rectangle (B3_R) node[midway,below] {Aws FollowerTask};
+		\drawLinkArrow{B1_L}{B1_R}{B2_L}{B2_R}
+		\drawLinkArrow{B1_L}{B1_R}{B3_L}{B3_R}
+
+  	\end{tikzpicture}
+
   \end{example}
 \end{frame}
 
@@ -281,70 +222,7 @@ Monitor Platform Architecture Spec %
 
 
 
-\section{Good News: Tractability Results}
 
-\subsection{Perfect Path Phylogenies}
-
-
-
-\begin{frame}{Example of a perfect path phylogeny.}
-  \begin{columns}[t]
-    \column{.3\textwidth}
-    \begin{exampleblock}{Genotype matrix}
-      $G\colon$
-      \begin{tabular}{ccc}
-        A & B & C \\\hline
-        2 & 2 & 2 \\
-        0 & 2 & 0 \\
-        2 & 0 & 0 \\
-        0 & 2 & 2 
-      \end{tabular}
-    \end{exampleblock}
-
-    \column{.3\textwidth}
-    \begin{exampleblock}{Haplotype matrix}
-      $H\colon$
-      \begin{tabular}{ccc}
-        A & B & C \\\hline
-        1 & 0 & 0 \\
-        0 & 1 & 1 \\
-        0 & 0 & 0 \\
-        0 & 1 & 0 \\
-        0 & 0 & 0 \\
-        1 & 0 & 0 \\
-        0 & 0 & 0 \\
-        0 & 1 & 1 
-      \end{tabular}
-    \end{exampleblock}
-
-    \column{.4\textwidth}
-    \begin{exampleblock}{Perfect path phylogeny}
-      \begin{center}
-        \begin{tikzpicture}[auto,thick]
-          \tikzstyle{node}=%
-          [%
-            minimum size=10pt,%
-            inner sep=0pt,%
-            outer sep=0pt,%
-            ball color=example text.fg,%
-            circle%
-          ]
-        
-          \node [node] {} [->]
-            child {node [node] {} edge from parent node[swap]{A}}
-            child {node [node] {}
-              child {node [node] {} edge from parent node{C}}
-              edge from parent node{B}
-            };
-        \end{tikzpicture}
-      \end{center}
-    \end{exampleblock}
-  \end{columns}
-\end{frame}
-
-
-
-\subsection{Tractability of PPP-Partitioning of Genotype Matrices}
 
 
 \appendix
