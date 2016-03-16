@@ -26,6 +26,7 @@
 \usetikzlibrary{calc}
 \usepackage{pgfmath}
 \usepackage{verbatim}
+\usepackage{listings}
 \tikzstyle{block}=[draw opacity=0.7,line width=1.4cm]
 
 
@@ -69,6 +70,10 @@ Monitor Platform Architecture Spec %
 		({(\x1 + \x2)*1/2} ,\y1) -- ({(\x3 + \x4)*1/2} ,\y4);
 }
 
+\newcommand{\drawBox}[3]{
+		\shade[top color=yellow,bottom color=black] (#1) rectangle (#2) node[midway,below] {#3};
+}
+
 \begin{document}
 
 \begin{frame}
@@ -97,16 +102,15 @@ Monitor Platform Architecture Spec %
 	\coordinate (B4_R) at (4,-7);
 	\coordinate (B5_L) at (7,-9);
 	\coordinate (B5_R) at (11,-7);
-   	\shade[top color=yellow,bottom color=black] (B1_L) rectangle (B1_R) node[midway,below] {Zookeeper};
-   	\shade[top color=orange,bottom color=black] (B2_L) rectangle (B2_R) node[midway,below] {Backend of Platform};
-   	\shade[top color=brown,bottom color=black] (B3_L) rectangle (B3_R) node[midway,below] {Platform};
-   	\shade[top color=red,bottom color=black] (B4_L) rectangle (B4_R) node[midway,below] {RegisterTaskInterface};
-   	\shade[top color=green,bottom color=black] (B5_L) rectangle (B5_R) node[midway,below] {CRUD on Data Interface};
+	\drawBox{B1_L}{B1_R}{Zookeeper}
+	\drawBox{B2_L}{B2_R}{Backend of Platform}
+	\drawBox{B3_L}{B3_R}{Platform}
+	\drawBox{B4_L}{B4_R}{RegisterTaskInterface}
+	\drawBox{B5_L}{B5_R}{CRUD on Data Interface}
 	\drawLinkArrow{B1_L}{B1_R}{B2_L}{B2_R}
 	\drawLinkArrow{B2_L}{B2_R}{B3_L}{B3_R}
 	\drawLinkArrow{B3_L}{B3_R}{B4_L}{B4_R}
 	\drawLinkArrow{B3_L}{B3_R}{B5_L}{B5_R}
-
 
   \end{tikzpicture}
 
@@ -154,9 +158,9 @@ Monitor Platform Architecture Spec %
 	\coordinate (B3_L) at (0,-6);
 	\coordinate (B3_R) at (10,-4);
 
-	\shade[top color=yellow,bottom color=black] (B1_L) rectangle (B1_R) node[midway,below] {ZookeeperBP implemenets Backend(BP)};
-   	\shade[top color=orange,bottom color=black] (B2_L) rectangle (B2_R) node[midway,below] {NameSpaceInterface};
-   	\shade[top color=orange,bottom color=black] (B3_L) rectangle (B3_R) node[midway,below] {Platform};
+	\drawBox{B1_L}{B1_R}{ZookeeperBP implemenets Backend(BP)}
+	\drawBox{B2_L}{B2_R}{NameSpaceInterface}
+	\drawBox{B3_L}{B3_R}{Platform}
 	\drawLinkArrow{B1_L}{B1_R}{B2_L}{B2_R}
 	\drawLinkArrow{B2_L}{B2_R}{B3_L}{B3_R}
 
@@ -188,6 +192,7 @@ Monitor Platform Architecture Spec %
 
 
 
+\subsection {Example}
 
 \begin{frame}{AWS capacity application}
   \begin{example}
@@ -207,15 +212,37 @@ Monitor Platform Architecture Spec %
 		\coordinate (B3_L) at (7,-2.5);
 		\coordinate (B3_R) at (13,-0.5);
 
-		\shade[top color=yellow,bottom color=black] (B1_L) rectangle (B1_R) node[midway,below] {Aws Capacity Application};
-		\shade[top color=orange,bottom color=black] (B2_L) rectangle (B2_R) node[midway,below] {Aws LeaderTask};
-		\shade[top color=orange,bottom color=black] (B3_L) rectangle (B3_R) node[midway,below] {Aws FollowerTask};
+		\drawBox{B1_L}{B1_R}{Aws Capacity Application}
+		\drawBox{B2_L}{B2_R}{Aws LeaderTask}
+		\drawBox{B3_L}{B3_R}{Aws FollowerTask}
 		\drawLinkArrow{B1_L}{B1_R}{B2_L}{B2_R}
 		\drawLinkArrow{B1_L}{B1_R}{B3_L}{B3_R}
 
   	\end{tikzpicture}
 
   \end{example}
+\end{frame}
+
+\begin{frame}{AWS capacity application}
+	\tiny
+	\begin{itemize}
+		\item LeaderTask:\texttt{RegisterTask(Namespace(ZK::AWSCAPACITY,
+exclusive),new PlatformTask(initFn = () => (),
+			quitFn = ()=>(), CallFrequencyConfig(periodic,60000)), def task = ()=> {
+	pollAws();
+	enumerateActiveNodes();
+	foreach node in ActiveNodes :createdata(node,metastate)	
+})
+ }
+	\item FollowerTask:\texttt{RegisterTask(Namespace(ZK::AWSCAPACITY,
+inclusive),new PlatformTask(initFn = () => (),
+			quitFn = ()=>(), CallFrequencyConfig(watch,-1)), def task = () => {
+	x: String= readData(""); //x will contain a list of name of nodes  inside the nmaespace watched
+	updateLocalDataStructures();
+})
+ }
+
+	\end{itemize}
 \end{frame}
 
 
