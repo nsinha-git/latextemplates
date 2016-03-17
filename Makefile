@@ -1,7 +1,7 @@
 
 CC=ls
-RM=rm -rf *.pdf *.dvi *.out *.log *.aux *.bcf *.xml *.snm *.toc *.nav
-RML=rm -rf  *.dvi *.out *.log *.aux *.bcf *.xml *.snm *.toc *.nav
+RM=rm -rf  *.pdf *.dvi *.out *.log *.aux *.bcf *.xml *.snm *.nav
+RML=rm -rf  *.dvi *.out *.log *.aux *.bcf *.xml *.snm  *.nav
 PDF=dvipdf
 
 all: create
