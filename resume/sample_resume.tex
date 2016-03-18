@@ -1,0 +1,71 @@
+\documentclass[10pt,a4paper,sans]{moderncvnsinha}        % possible options include font size ('10pt', '11pt' and '12pt'), paper size ('a4paper', 'letterpaper', 'a5paper', 'legalpaper', 'executivepaper' and 'landscape') and font family ('sans' and 'roman')
+
+% moderncvnsinha themes
+\moderncvnsinhastyle{banking}                             % style options are 'casual' (default), 'classic', 'banking', 'oldstyle' and 'fancy'
+\moderncvnsinhacolor{purple}                               % color options 'black', 'blue' (default), 'burgundy', 'green', 'grey', 'orange', 'purple' and 'red'
+%\renewcommand{\familydefault}{\sfdefault}         % to set the default font; use '\sfdefault' for the default sans serif font, '\rmdefault' for the default roman one, or any tex font name
+%\nopagenumbers{}                                  % uncomment to suppress automatic page numbering for CVs longer than one page
+
+
+% adjust the page margins
+\usepackage[scale=0.91]{geometry}
+
+% personal data
+\name{Nishchay(Nish)}{Sinha}
+\address{1367 Elkwood Dr}{Milpitas 95035}{USA}
+\phone[mobile]{+1~(408)~431~8434}                   
+\email{nishchay.sinha@gmail.com}                               
+\social[linkedin]{nishchay-nish-sinha-8398279}                        
+\social[github]{nsinha-xad}                              
+%\photo[64pt][0.4pt]{photo}                       % optional, remove / comment the line if not wanted; '64pt' is the height the picture must be resized to, 0.4pt is the thickness of the frame around it (put it to 0pt for no frame) and 'picture' is the name of the picture file
+\quote{Mind, once stretched by an idea, will not regain its previous form. --- Taoism}                                 
+
+\begin{document}
+\enumhook
+\makecvtitle
+
+\emph{I will describe myself as someone who likes to hack things which contain creativity and in the process learn ways to ideate or/and build something distinct that is greater than its parts---as a professional software engineer I like defining, building cool software and learning from existing ones especially the classics.}
+
+\section{Education}
+\cventry{2009--2011}{Masters in Sc.}{Stanford University}{Palo Alto}{\textit{Gpa: 3.7}}{Concentration in Electrical Engineering, Computer Science and Maths}  % arguments 3 to 6 can be left empty
+\cventry{1997--2001}{Bachelors in Sc.}{IIT}{Kharagpur}{\textit{Gpa: 3.7}}{Major in Electrical and Computer Engineering}
+
+\section{Experience}
+\cventry{2015--Current}{Software Engineer}{Xad Inc}{Mountain View, CA}{}{Responsible for Ad tech system and infrastructure}%
+\begin{itemize}%
+	\item Design and implementation of components in distributed system needed to control, measure, track and optimize an ad tech network: Understanding complex requirements, drafting them into technical specifications and turning them to computer implementation in a team and individual capacity.
+		\item \cvitem{Keywords}{Scala, Java, Web Services, Zookeeper, Konsul, Kafka, Carbon, Graphite, MySql, Linux, Aws}
+\end{itemize}
+
+\cventry{2015--2015}{Software Engineer}{Syncplicity,EMC Inc}{Palo Alto, CA}{}{Reporting and analysts pipeline}%
+	\begin{itemize}%
+		\item Design and implementation of components in analytics pipeline targeting user profile and usage statistics atop Syncplicity file storage system---from choosing message architecture and database systems (kafka, carbon, druid) to designing subsystems on top of that.
+		\item \cvitem{Keywords}{Scala, Java, Web Services, Kafka, Carbon, Graphite, Druid, MySql, Azure}
+	\end{itemize}
+
+\cventry{2012--2014}{Software Engineer}{Synopsys Inc}{Mountain view, CA}{}{Optimization of integrated chip(IC) design subsystem}%
+	\begin{itemize}%
+		\item Reported to the optimization group---responsible for debugging, maintaining and implementing algorithms required to optimize the KPI of IC compilation. 
+		\item \cvitem{Keywords}{Proprietary databases, C++, C, CTest, Linux, Solaris, Threading models}
+	\end{itemize}
+
+\cventry{2011--2012}{Software Engineer}{Nuance Communications Inc}{Mountain view, CA}{}{Desktop UI application for software integrated meeting place}%
+	\begin{itemize}%
+		\item Reported to team responsible for  Java and Swing based desktop UI interface for integrated voice, chat, calendar desktop client with webservices interface.
+		\item \cvitem{Keywords}{Java, Swing, Native C++, Cmake, Linux, Rest Api, Threading model, Sqlite, MySql, C\#, .Net}
+	\end{itemize}
+
+\cventry{2006--2009}{Software Engineer}{Ditech Networks}{Mountain view, CA}{}{Multimedia applications atop embedded systems}%
+	\begin{itemize}%
+		\item Design and implemented VOIP applications atop wireless(wifi and bluetooth) and cellular networks. Various applications like audio mixing  in multiparty audio conference, echo cancellation, voice quality techniques, Fax over IP, Modem over IP(MOIP), etc. .  
+		\item \cvitem{Keywords}{C++, C, Assembly, Cross-compilation, Cmake, Linux flavors, RTOS, Threading model, Process Model, Filesystems}
+	\end{itemize}
+\cventry{2002--2006}{Software Engineer}{Conexant Systems}{Red Bank, NJ}{}{Implementation of server and client side digital subscriber line systems(DSL)}%
+	\begin{itemize}%
+		\item Design and implementation of VDSL and ADSL modem systems running atop embedded systems(RTOS, Linux) and desktop(softdsl)
+		\item \cvitem{Keywords}{C++, C, Assembly, Cross-compilation, Cmake, Linux flavors, RTOS, Threading model, Process Model, Computation model, Filesystems}
+	\end{itemize}
+
+
+\clearpage
+\end{document}

@@ -28,6 +28,7 @@
 \usepackage{pgfmath}
 \usepackage{verbatim}
 \usepackage{listings}
+\usepackage{ulem}
 \tikzstyle{block}=[draw opacity=0.7,line width=1.4cm]
 \lstset{language=C}
 
@@ -129,8 +130,9 @@ Monitor Platform Architecture Spec %
 			\item bool \alert{RegisterTask}(Namespace, PlatformTask(initFn,quitFn,runnableMainTask,CallFrequencyConfig)).
 			\begin{itemize}
 				\item Namespace(name: String, access:Enum\{exclusive, inclusive\}).
-				\item CallFrequnecyConfig(Type: Enum\{periodic,watchOnEvent,\textit{dontcallmewillcallyou}\}), period: milliseconds).
+				\item CallFrequnecyConfig(Type: Enum\{periodic,watchOnEvent,\textit{dontcallmewillcallyou}\}), period: milliseconds, randomDelayMax:milliseconds, watchkey:Option[String],longwatch:bool).
 			\end{itemize}
+			\item bool \alert{UnRegisterTask}().
 		\end{itemize}
 	\end{block}
 \end{frame}
@@ -146,7 +148,7 @@ Monitor Platform Architecture Spec %
 			\item bool \alert{deleteData}(key:String)
 			\item bool \alert{existsData}(key:String)
 			\item String \alert{readData}(key:String)
-			\item bool \alert{watchData}(key:String, fn: Function)
+			\item \sout{bool \alert{watchData}(key:String, fn: Function)}
 		\end{itemize}
 	\end{block}
 
@@ -191,7 +193,7 @@ Monitor Platform Architecture Spec %
 			\item bool \alert{inclusiveAccessNamespace}(fn:callbackFn)
 			\item bool \alert{createDataNamespace}(key:String)
 			\item bool \alert{deleteDataNamespace}(key:String)
-			\item bool \alert{watchDataNamespace}(key:String)
+			\item bool \alert{watchDataNamespace}(key:String, fn:callbackFn)
 			\item String \alert{readDataNamespace}(key:String)
 			\item bool \alert{checkDataNamespace}(key:String)
 			\item bool \alert{updateDataNamespace}(key:String)
